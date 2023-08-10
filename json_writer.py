@@ -100,6 +100,8 @@ def write_to_json(
             {
                 "title": issue.title,
                 "html_url": issue.html_url,
+                "created_at": str(issue.created_at),
+                "closed_at": str(issue.closed_at),
                 "time_to_first_response": str(issue.time_to_first_response),
                 "time_to_close": str(issue.time_to_close),
                 "time_to_answer": str(issue.time_to_answer),

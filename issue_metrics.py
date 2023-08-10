@@ -23,6 +23,7 @@ Functions:
 
 import os
 from os.path import dirname, join
+from re import I
 import sys
 from typing import List, Union
 
@@ -170,6 +171,8 @@ def get_per_issue_metrics(
             issue_with_metrics = IssueWithMetrics(
                 issue["title"],
                 issue["url"],
+                issue["createdAt"],
+                issue["closedAt"],
                 None,
                 None,
                 None,
@@ -188,6 +191,8 @@ def get_per_issue_metrics(
             issue_with_metrics = IssueWithMetrics(
                 issue.title,  # type: ignore
                 issue.html_url,  # type: ignore
+                issue.created_at,  # type: ignore
+                issue.closed_at,  # type: ignore
                 None,
                 None,
                 None,
