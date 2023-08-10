@@ -21,6 +21,9 @@ Functions:
     main(): Run the issue-metrics script.
 """
 
+from calendar import c
+from itertools import count
+from operator import le
 import os
 from os.path import dirname, join
 from re import I
@@ -90,6 +93,10 @@ def search_issues(
     issues = []
     try:
         for issue in issues_iterator:
+            if len(issues) >= 1000 - 1:
+                print("Only the first 1000 issues will be measured.")
+                print(f"The last issue title is: {issue.title}") # type: ignore
+                break
             print(issue.title)  # type: ignore
             issues.append(issue)
     except github3.exceptions.ForbiddenError:
@@ -160,6 +167,7 @@ def get_per_issue_metrics(
             and the number of closed issues or discussions.
 
     """
+    print("Calculating metrics for each issue...")
     issues_with_metrics = []
     num_issues_open = 0
     num_issues_closed = 0
@@ -308,18 +316,16 @@ def main():
         ignore_users=ignore_users,
     )
 
-    average_time_to_first_response = get_average_time_to_first_response(
-        issues_with_metrics
-    )
+    average_time_to_first_response = None
     average_time_to_close = None
-    if num_issues_closed > 0:
-        average_time_to_close = get_average_time_to_close(issues_with_metrics)
+    # if num_issues_closed > 0:
+    #     average_time_to_close = get_average_time_to_close(issues_with_metrics)
 
-    average_time_to_answer = get_average_time_to_answer(issues_with_metrics)
+    average_time_to_answer = None
 
     # Get the average time in label for each label and store it in a dictionary
     # where the key is the label and the value is the average time
-    average_time_in_labels = get_average_time_in_labels(issues_with_metrics, labels)
+    average_time_in_labels = None
 
     # Write the results to json and a markdown file
     write_to_json(

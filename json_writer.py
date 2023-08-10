@@ -70,6 +70,7 @@ def write_to_json(
 
     """
 
+    print("Writing to JSON file...")
     # Ensure issues_with_metrics is not None
     if not issues_with_metrics:
         return ""
@@ -96,15 +97,22 @@ def write_to_json(
         if issue.label_metrics:
             for label, time in issue.label_metrics.items():
                 formatted_label_metrics[label] = str(time)
+        
+        time_to_first_response = int(issue.time_to_first_response.total_seconds()) if issue.time_to_first_response else None
+        time_to_close = int(issue.time_to_close.total_seconds()) if issue.time_to_close else None
+        time_to_answer = int(issue.time_to_answer.total_seconds()) if issue.time_to_answer else None
         issues.append(
             {
                 "title": issue.title,
                 "html_url": issue.html_url,
                 "created_at": str(issue.created_at),
                 "closed_at": str(issue.closed_at),
-                "time_to_first_response": str(issue.time_to_first_response),
-                "time_to_close": str(issue.time_to_close),
-                "time_to_answer": str(issue.time_to_answer),
+                # "time_to_first_response": str(issue.time_to_first_response),
+                # "time_to_close": str(issue.time_to_close),
+                # "time_to_answer": str(issue.time_to_answer),
+                "time_to_first_response": time_to_first_response,
+                "time_to_close": time_to_close,
+                "time_to_answer": time_to_answer,
                 "label_metrics": formatted_label_metrics,
             }
         )
